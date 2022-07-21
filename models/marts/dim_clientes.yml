@@ -1,9 +1,0 @@
-version: 2
-
-models:
-  - name: dim_clientes
-    columns:
-      - name: customerid
-        description: The primary key of the customer
-        tests:
-          - not_null

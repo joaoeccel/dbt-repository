@@ -9,16 +9,18 @@ with source_data as (
         , shiptoaddressid
         , onlineorderflag
         , territoryid
-        , 'status'
+        , status as order_status
         , orderdate
         , creditcardapprovalcode
         , subtotal
         , creditcardid
+        , currencyrateid
         , revisionnumber
         , freight
         , duedate
         , totaldue
         , customerid
+        , salespersonid
         , shipdate
         , accountnumber
     from {{ source('adventureworks-erp', 'salesorderheader') }}

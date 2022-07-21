@@ -2,8 +2,8 @@ with source_data as (
     select
         countryregioncode
         , modifieddate
-        , 'name'
-    from {{ source('adventureworks-erp', 'creditcard') }}
+        , name as country_name
+    from {{ source('adventureworks-erp', 'countryregion') }}
 )
 select *
 from source_data

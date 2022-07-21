@@ -16,11 +16,15 @@ sources:
           - name: shipmethodid
             description: ship method id
 
+      - name: address
+      - name: businessentityaddress
+      - name: countryregion
+      - name: customer
+      - name: creditcard
+      - name: product
+      - name: person
+      - name: store
       - name: salesorderdetail
       - name: salesorderheadersalesreason
       - name: salesreason
       - name: stateprovince
-      - name: product
-      - name: creditcard
-      - name: countryregion
-      - name: address
