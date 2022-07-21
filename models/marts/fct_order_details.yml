@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: fct_order_details
+    columns:
+      - name: salesorderid
+        description: The primary key of the sale
+        tests:
+          - not_null
+      - name: creditcard_fk
+        description: The primary key of the sale
+        tests:
+          - not_null

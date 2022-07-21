@@ -1,6 +1,7 @@
 with source_data as (
     select
         productid
+        , name as product_name
         , safetystocklevel
         , finishedgoodsflag
         , class
@@ -12,14 +13,13 @@ with source_data as (
         , productmodelid
         , weightunitmeasurecode
         , standardcost
-        , 'name'
         , productsubcategoryid
         , listprice
         , daystomanufacture
         , productline
         , color
         , sellstartdate
-        , 'weight'
+        , weight as product_weight
     from {{ source('adventureworks-erp', 'product') }}
 )
 select *
