@@ -8,5 +8,11 @@ models:
         tests:
           - not_null   
       - name: creditcardid
-        description: The primary key of the creditcard
+        description: The natural key of the creditcard
         tests:
+          - unique 
+          - not_null 
+      - name: cardtype
+        description: The card name
+        tests:
+          - not_null

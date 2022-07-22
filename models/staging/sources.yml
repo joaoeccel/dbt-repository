@@ -5,26 +5,15 @@ sources:
     schema: awpg
     description: This is the adventureworks erp postgres database replica
     tables:
-      - name: salesorderheader
-        description: One record per order. 
-        columns:
-          - name: salesorderid
-            description: Primary key of the table
-            tests:
-              - unique
-              - not_null
-          - name: shipmethodid
-            description: ship method id
-
       - name: address
-      - name: businessentityaddress
       - name: countryregion
-      - name: customer
       - name: creditcard
-      - name: product
+      - name: customer
       - name: person
-      - name: store
+      - name: product
       - name: salesorderdetail
+      - name: salesorderheader
       - name: salesorderheadersalesreason
       - name: salesreason
       - name: stateprovince
+      - name: store

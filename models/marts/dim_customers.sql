@@ -1,41 +1,43 @@
-with stg_salesorderheader as (
+with stg_customer as (
     select 
-    distinct(customerid)
-    , shiptoaddressid
-    from {{ref('stg_salesorderheader')}}
-)
-
-, stg_businessentityaddress as (
-    select *
-    from {{ref('stg_businessentityaddress')}}
+        customerid
+        , personid
+        , storeid
+    from {{ref('stg_customer')}}
 )
 
 , stg_person as (
-    select *
+    select
+        businessentityid
+        -- Adopted function concat() to concatenate first, middle and lastnames
+        , concat(ifnull(firstname,' '),' ',ifnull(middlename,' '),' ',ifnull(lastname,' ')) as fullname
     from {{ref('stg_person')}}
 )
 
-, transformed as (
-SELECT
-    row_number() over (order by stg_salesorderheader.customerid) as customer_sk -- auto-incremental surrogate key
-    , stg_salesorderheader.customerid
-    , stg_salesorderheader.shiptoaddressid
-    , stg_businessentityaddress.addressid as addressid_person
-    , stg_businessentityaddress.businessentityid as businessentitytidbeaddress
-    , stg_person.businessentityid as businessentitytid_person
-    , stg_person.firstname
-    , stg_person.middlename
-    , stg_person.lastname
-    , CONCAT(
-        IFNULL(stg_person.firstname,' ')
-        ,' '
-        ,IFNULL(stg_person.middlename,' ')
-        ,' '
-        ,IFNULL(stg_person.lastname,' ')) as customer_fullname
-    FROM stg_salesorderheader
-    left join stg_businessentityaddress on stg_salesorderheader.shiptoaddressid = stg_businessentityaddress.addressid
-    left join stg_person on stg_businessentityaddress.businessentityid = stg_person.businessentityid
+, stg_store as (
+    select
+        businessentityid as storebusinessentityid
+        , storename
+    from {{ref('stg_store')}}
 )
 
+, transformed as (
+    select
+    row_number() over (order by stg_customer.customerid) as customer_sk -- auto-incremental surrogate key    
+    , stg_customer.customerid
+    , stg_person.businessentityid
+    , stg_person.fullname
+    , stg_store.storebusinessentityid
+    , stg_store.storename
+    , case
+        --for every customerid, when there is no customer name related to the customerid, a store name is set
+        when stg_person.fullname is null
+        then stg_store.storename
+        else stg_person.fullname 
+        end as customer_fullname
+    from stg_customer
+    left join stg_person on stg_customer.personid = stg_person.businessentityid
+    left join stg_store on stg_customer.storeid = stg_store.storebusinessentityid
+)
 select *
 from transformed

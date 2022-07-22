@@ -1,9 +1,4 @@
-with stg_salesorderheader as (
-    select *
-    from {{ref('stg_salesorderheader')}}
-)
-
-, stg_salesorderheadersalesreason as (
+with stg_salesorderheadersalesreason as (
     select *
     from {{ref('stg_salesorderheadersalesreason')}}
 )
@@ -13,15 +8,21 @@ with stg_salesorderheader as (
     from {{ref('stg_salesreason')}}
 )
 
-, transformed as (
+, reasonbyorderid as (
     select 
-        -- Here, no surrogate key is created, as one salesorderid can have more than one salesreason.
         stg_salesorderheadersalesreason.salesorderid
-        , IFNULL(stg_salesreason.reason_name,'Not indicated') as reason_name
-        , stg_salesorderheadersalesreason.salesreasonid 
-        , stg_salesreason.salesreasonid as salesreasonid_from_salesreason
+        , stg_salesreason.reason_name as reason_name
     from stg_salesorderheadersalesreason
     left join stg_salesreason on stg_salesorderheadersalesreason.salesreasonid = stg_salesreason.salesreasonid 
+)
+
+, transformed as (
+    select
+        salesorderid
+        -- function used to aggregate in one row any multiple reasons attributed to a single salesorderid
+        , string_agg(reason_name, ', ') as reason_name_aggregated
+    from reasonbyorderid
+    group by salesorderid
 )
 
 select *
