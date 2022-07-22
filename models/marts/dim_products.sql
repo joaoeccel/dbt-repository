@@ -18,7 +18,6 @@ with stg_salesorderheader as (
     select 
         row_number() over (order by stg_salesorderdetail.productid) as product_sk -- auto-incremental surrogate key
         , stg_salesorderdetail.productid
-        , stg_product.productid as productid_from_production
         , stg_product.product_name 
     from stg_salesorderdetail
     left join stg_product on stg_salesorderdetail.productid = stg_product.productid

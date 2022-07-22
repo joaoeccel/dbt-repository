@@ -23,14 +23,9 @@ with stg_salesorderheader as (
     select
         row_number() over (order by stg_salesorderheader.shiptoaddressid) as shiptoaddress_sk -- auto-incremental surrogate key
         , stg_salesorderheader.shiptoaddressid 
-        , stg_address.addressid as addressidaddress
         , stg_address.city as city_name
-        , stg_address.stateprovinceid
-        , stg_stateprovince.stateprovinceid as stateprovinceidsp
         , stg_stateprovince.state_name
-        , stg_stateprovince.countryregioncode
-        , stg_countryregion.countryregioncode as crcodecr
-        , stg_countryregion.country_name	 
+        , stg_countryregion.country_name
     from stg_salesorderheader
     left join stg_address on stg_salesorderheader.shiptoaddressid = stg_address.addressid
     left join 	stg_stateprovince on stg_address.stateprovinceid = stg_stateprovince.stateprovinceid

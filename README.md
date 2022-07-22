@@ -1,6 +1,13 @@
-Welcome to your new dbt project!
+### Introduction
 
-### Using the starter project
+Welcome to my dbt project!
+
+This files are used to transform data that is in the Data warehouse (Google BigQuery), preparing it to be used by a data viz tool. 
+
+The data used in this project is data from the company Adventure Works.
+
+
+### Basic commands
 
 Try running the following commands:
 - dbt run
